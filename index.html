@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+	<title>Site Vote</title>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="css/bootstrap.min.css" media="all" type='text/css'/>
+	<link rel="stylesheet" href="css/style.css" media="all" type='text/css'/>
+	<link rel="stylesheet" href="css/buefy.css" media="all" type='text/css'/>
+	<link href="https://fonts.googleapis.com/css?family=Cabin:400,700" rel="stylesheet"> 
+	<link rel="stylesheet" href="http://cdn.materialdesignicons.com/2.3.54/css/materialdesignicons.min.css">
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/vue.js"></script>
+	<script type="text/javascript" src="js/buefy.js"></script>
+	<script type="text/javascript" src="js/fontawesome.js"></script>
+	<script type="text/javascript" src="js/confirm.min.js"></script>
+	
+</head>
+<body>
+	<div id="main" class="container">
+		<div id="header" class="displayTable marginAuto padding">
+			<h2> Hangi sosyal medya uygulamalarını kullanıyorsunuz? </h2>
+		</div>
+		<div id="add-media" class="displayTable marginAuto padding" v-on:click="openDialog">
+			<button class="button is-primary"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Site Ekle</button>
+		</div> 
+		<b-table :data="datas" :selected.sync="selectedSite"
+			narrowed="narrowed" id="vote-table"
+			:current-page.sync="current"
+			:paginated="true" per-page="10"
+			v-on:click="focusEl"
+			>
+			<template slot-scope="props">
+				<b-table-column field="siteName" label="Site İsmi" sortable="sortable" >
+					{{ props.row.siteName }}
+				</b-table-column>
+				<b-table-column field="url" label="Site linki" sortable="sortable" >
+					{{ props.row.url }}
+				</b-table-column>
+				<b-table-column field="voteCount" label="Oy Sayısı" sortable="sortable" >
+					{{ props.row.voteCount }}
+				</b-table-column>
+				<b-table-column field="vote" label="Oy Ver" sortable="sortable" >
+					<span :class="{ 'vote-color': props.row.vote }" class="vote-span" @click="voteUp(props.row.siteName, props.row.url, props.row.voteCount, props.row.vote)">
+						<i class="fa fa-thumbs-up"></i>
+					</span>
+					<span class="vote-span" @click="voteDown(props.row.siteName, props.row.url, props.row.voteCount, props.row.vote)">
+						<i class="fa fa-thumbs-down"></i>
+					</span>
+				</b-table-column>
+			</template>
+		</b-table>
+		<add-dialog
+			name="add-dialog"
+			:visible="dialogVisible"
+			:bus="bus"
+			v-on:close="closeDialog">
+
+			Yeni eleman ekle
+		</add-dialog>
+	</div>
+	<script type="text/javascript" src="js/dialog.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
+</body>
+</html>
